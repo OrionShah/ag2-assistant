@@ -33,6 +33,11 @@ export const MODEL_TEMPLATES: ModelTemplate[] = [
     type: 'codex', model: '',
     blurb: 'Your ChatGPT plan, via the Codex CLI you’re already signed in to',
   },
+  {
+    name: 'Kimi Code', card: 'Kimi Code · CLI login',
+    type: 'kimi_code', model: '',
+    blurb: 'Your Kimi membership, via the Kimi Code CLI you’re already signed in to',
+  },
   { name: 'OpenAI', type: 'openai_responses', model: 'gpt-5.6-terra', blurb: 'GPT models, direct from OpenAI — generates images' },
   {
     name: 'OpenAI-compatible',

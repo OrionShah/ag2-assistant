@@ -153,6 +153,8 @@
       return 'Runs on your Claude Code CLI login (claude-agent-acp) — no API key is involved.'
     if (type === 'codex')
       return 'Runs on your Codex CLI login (codex-acp) — no API key is involved.'
+    if (type === 'kimi_code')
+      return 'Runs on your Kimi Code CLI login (kimi acp) — no API key is involved.'
     if (type === 'ollama') return 'Ollama is local — no API key is used.'
     const env = ENV_OF[type]
     const shared = ctx?.s?.keys?.[PROV_OF[type] || '']
@@ -170,7 +172,7 @@
 
   // Empty model is valid for the CLI-login types only (= the CLI's own default)
   // — every other type requires an explicit model name.
-  const modelOptional = $derived(type === 'codex' || type === 'claude_code')
+  const modelOptional = $derived(type === 'codex' || type === 'claude_code' || type === 'kimi_code')
 
   // Model names belong to their provider ("haiku" means nothing to Codex), so
   // switching type clears the model instead of carrying a stale name into the
@@ -284,7 +286,7 @@
   // string — the selects just edit it. Codex ids decompose into two selects
   // (family[effort] = model + reasoning); claude ids do NOT (the bracket there is
   // part of the model preference, e.g. "opus[1m]" = 1M context) — one flat select.
-  const acpAgent = $derived(type === 'codex' ? 'codex' : type === 'claude_code' ? 'claude' : '')
+  const acpAgent = $derived(type === 'codex' ? 'codex' : type === 'claude_code' ? 'claude' : type === 'kimi_code' ? 'kimi' : '')
   let catalogs = $state<Record<string, 'loading' | CodingCatalog>>({})
   function fetchCatalog(agent: string, refresh = false) {
     catalogs[agent] = 'loading'
@@ -304,7 +306,7 @@
   // The adapter's own current selection labels the "CLI default" row, so leaving
   // the model empty is a legible choice rather than a blind one.
   const defaultLabel = $derived(acpState?.current ? `CLI default (${acpState.current})` : 'CLI default')
-  const ADAPTER_PKG: Record<string, string | undefined> = { claude: '@agentclientprotocol/claude-agent-acp', codex: '@agentclientprotocol/codex-acp' }
+  const ADAPTER_PKG: Record<string, string | undefined> = { claude: '@agentclientprotocol/claude-agent-acp', codex: '@agentclientprotocol/codex-acp', kimi: '@moonshot-ai/kimi-code' }
   const acpNote = $derived.by(() => {
     if (!acpAgent || acpLoading || acpCatalog.length) return ''
     if (acpState?.reason === 'adapter_missing')
@@ -462,9 +464,9 @@
         </select>
       </div>
     {/if}
-  {:else if type === 'claude_code' && claudeOptions.length}
-    <!-- Claude Code's catalog values ride ANTHROPIC_MODEL verbatim ("opus[1m]",
-         "sonnet", …) — one flat select, no decomposition. -->
+  {:else if (type === 'claude_code' || type === 'kimi_code') && claudeOptions.length}
+    <!-- claude/kimi catalog ids are opaque model names ("opus[1m]", "sonnet", …) —
+         one flat select, no codex-style family[effort] decomposition. -->
     <div class="llmfield">
       <label for="lf-model-claude">Model</label>
       <select id="lf-model-claude" bind:value={model}>
@@ -539,7 +541,7 @@
       </div>
       <span class="llmhint">{keyUsage}</span>
     </div>
-  {:else if type === 'claude_code' || type === 'codex'}
+  {:else if type === 'claude_code' || type === 'codex' || type === 'kimi_code'}
     <!-- No endpoint or key fields: auth is the CLI's own on-disk login, and the ACP
          adapter is found on PATH (or via the Docker host bridge). -->
     <div class="llmfield">
@@ -549,8 +551,10 @@
            example model names are spelled out here (they rot with every release). -->
       {#if type === 'claude_code'}
         <span class="llmhint">Requires the <code>claude-agent-acp</code> adapter on PATH (<code>npm i -g @agentclientprotocol/claude-agent-acp</code>) and a logged-in Claude Code CLI.</span>
-      {:else}
+      {:else if type === 'codex'}
         <span class="llmhint">Requires the <code>codex-acp</code> adapter on PATH (<code>npm i -g @agentclientprotocol/codex-acp</code>) and a logged-in Codex CLI.</span>
+      {:else}
+        <span class="llmhint">Requires the Kimi Code CLI on PATH (<code>npm i -g @moonshot-ai/kimi-code</code>) and a logged-in CLI (<code>kimi login</code>).</span>
       {/if}
     </div>
   {:else}

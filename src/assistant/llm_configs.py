@@ -66,6 +66,7 @@ TYPES = (
     "ollama",
     "claude_code",
     "codex",
+    "kimi_code",
 )
 
 # type → the ``cfg.llm.provider`` it derives to (all three OpenAI surfaces are provider
@@ -80,6 +81,7 @@ PROVIDER_OF = {
     "ollama": "ollama",
     "claude_code": "claude_code",
     "codex": "codex",
+    "kimi_code": "kimi_code",
 }
 
 # The CLI-login types: a coding CLI driven over ACP, auth = that CLI's own on-disk
@@ -88,7 +90,7 @@ PROVIDER_OF = {
 # constructor overrides — so the rules below branch on this ONE tuple. A third
 # adapter (detect.py already knows ``opencode``) becomes an entry here plus its
 # ``_cli_login_present`` row, not another eight scattered literals.
-CLI_LOGIN_TYPES = ("claude_code", "codex")
+CLI_LOGIN_TYPES = ("claude_code", "codex", "kimi_code")
 
 
 def _subscription_signed_in(paths: Paths) -> bool:
@@ -123,7 +125,11 @@ def _acp_adapter_present(name: str, search_path: Sequence[Path], bridge: object)
 
 
 # CLI-login type → the coding agent whose ACP adapter backs it (detect.py's names).
-_CLI_LOGIN_AGENT = {"claude_code": "claude", "codex": "codex"}
+_CLI_LOGIN_AGENT = {
+    "claude_code": "claude",
+    "codex": "codex",
+    "kimi_code": "kimi",
+}
 
 
 def cli_login_present(

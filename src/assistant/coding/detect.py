@@ -27,12 +27,14 @@ _KNOWN: dict[str, tuple[str, list[str]]] = {
     "claude": ("claude-agent-acp", ["claude-agent-acp"]),
     "codex": ("codex-acp", ["codex-acp"]),
     "opencode": ("opencode", ["opencode", "acp"]),
+    "kimi": ("kimi", ["kimi", "acp"]),
 }
 
 _LABELS = {
     "claude": "Claude Code",
     "codex": "Codex",
     "opencode": "OpenCode",
+    "kimi": "Kimi Code",
 }
 
 

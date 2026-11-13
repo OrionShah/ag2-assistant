@@ -152,7 +152,7 @@ register(
 # ChatGPT backend rejects parameters the real OpenAI API accepts (see
 # llm_configs._clean_entry's option stripping), so its Responses-shaped tool
 # support is not assumed.
-for _ctype in ("openai", "openai_subscription", "ollama", "claude_code", "codex"):
+for _ctype in ("openai", "openai_subscription", "ollama", "claude_code", "codex", "kimi_code"):
     register(_ctype)
 
 

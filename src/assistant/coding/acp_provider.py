@@ -13,16 +13,19 @@ claude-agent-acp, codex-acp 1.1.7), so the HTTP-only gateway is compatible.
 """
 
 import json
+import logging
 import re
 from typing import TYPE_CHECKING
 
-from ag2.acp.config import ACPConfig, ClaudeCodeConfig, CodexConfig
+from ag2.acp.config import ACPConfig, ClaudeCodeConfig, CodexConfig, KimiCodeConfig
 
 from assistant.coding import detect
 from assistant.coding.bridge_client import BridgeClient
 
 if TYPE_CHECKING:
     from assistant.config import Config
+
+logger = logging.getLogger(__name__)
 
 # Per-prompt-turn ceiling (seconds). A main-model turn contains the CLI agent's
 # whole inner tool loop, so it dwarfs a single API call; the silence watchdog
@@ -80,9 +83,32 @@ def build_codex_config(
     return _build(CodexConfig, "codex", config, model, env, options, connector_factory)
 
 
+def build_kimi_config(
+    config: "Config",
+    model: str | None = None,
+    options: dict | None = None,
+    *,
+    connector_factory=None,
+) -> ACPConfig:
+    """Kimi Code as the assistant's main model over its native ACP server."""
+    return _build(
+        KimiCodeConfig,
+        "kimi",
+        config,
+        model,
+        None,
+        options,
+        connector_factory,
+    )
+
+
 # provider name → its builder, so callers dispatch without a name-to-function
 # conditional (see agent.ACP_PROVIDERS).
-BUILDERS = {"claude_code": build_claude_config, "codex": build_codex_config}
+BUILDERS = {
+    "claude_code": build_claude_config,
+    "codex": build_codex_config,
+    "kimi_code": build_kimi_config,
+}
 
 
 def _build(

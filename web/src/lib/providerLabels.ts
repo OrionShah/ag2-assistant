@@ -13,6 +13,7 @@ export const TYPE_LABEL: LabelMap = {
   openai_subscription: 'OpenAI · ChatGPT subscription',
   anthropic: 'Anthropic', gemini: 'Gemini', ollama: 'Ollama',
   claude_code: 'Claude Code · CLI login', codex: 'Codex · CLI login',
+  kimi_code: 'Kimi Code · CLI login',
 }
 
 // The template-grid heading for the options that need no API key at all.
@@ -25,13 +26,14 @@ export const GROUP_ORDER: string[] = [SUBSCRIPTION_GROUP, 'OpenAI', 'Anthropic',
 // together, everything else groups by vendor.
 export const TYPE_GROUP: LabelMap = {
   openai_subscription: SUBSCRIPTION_GROUP, claude_code: SUBSCRIPTION_GROUP, codex: SUBSCRIPTION_GROUP,
+  kimi_code: SUBSCRIPTION_GROUP,
   openai_responses: 'OpenAI', openai: 'OpenAI',
   anthropic: 'Anthropic', gemini: 'Google', ollama: 'Ollama',
 }
 
 // LLM config type -> what the user must bring, chipped on every template card.
 export const TYPE_CHIP: LabelMap = {
-  openai_subscription: 'OAuth', claude_code: 'ACP', codex: 'ACP',
+  openai_subscription: 'OAuth', claude_code: 'ACP', codex: 'ACP', kimi_code: 'ACP',
   openai_responses: 'API key', openai: 'API key',
   anthropic: 'API key', gemini: 'API key', ollama: 'no key',
 }

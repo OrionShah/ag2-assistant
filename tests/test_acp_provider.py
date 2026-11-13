@@ -132,3 +132,49 @@ def test_local_mode_never_builds_a_bridge_connector(tmp_path):
     c = acp_provider.build_claude_config(_cfg(tmp_path), connector_factory=connector)
     assert connector.args is None
     assert c.expose_tools is True
+
+
+def test_build_kimi_local_config(tmp_path):
+    c = acp_provider.build_kimi_config(_cfg(tmp_path))
+    assert c.command == ["kimi", "acp"]
+    assert c.cwd == str(tmp_path)
+    assert c.fs_root == str(tmp_path)
+    assert c.env is None
+    assert c.model is None
+    assert c.permission_policy == "ask"
+    assert isinstance(c, acp_provider.KimiCodeConfig)
+
+
+class FakeConn:
+    """Records set_config_option calls, or raises when told to."""
+
+    def __init__(self, fail: bool = False):
+        self.calls = []
+        self.fail = fail
+
+    async def set_config_option(self, **kwargs):
+        if self.fail:
+            raise RuntimeError("methodNotFound")
+        self.calls.append(kwargs)
+
+
+class FakeSession:
+    def __init__(self, conn, session_id):
+        self.conn = conn
+        self.session_id = session_id
+
+
+async def test_kimi_session_is_reset_out_of_plan_mode(tmp_path):
+    client = acp_provider.build_kimi_config(_cfg(tmp_path)).create()
+    conn = FakeConn()
+    session = FakeSession(conn, "s1")
+    await client._reset_mode_once(session)
+    await client._reset_mode_once(session)
+    assert conn.calls == [{"session_id": "s1", "config_id": "mode", "value": "default"}]
+
+
+async def test_kimi_mode_reset_refusal_does_not_break_the_turn(tmp_path):
+    client = acp_provider.build_kimi_config(_cfg(tmp_path)).create()
+    # An agent without the mode option raises; the session still proceeds and
+    # the refusal is not retried on every model turn.
+    await client._reset_mode_once(FakeSession(FakeConn(fail=True), "s2"))

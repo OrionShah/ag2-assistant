@@ -69,6 +69,7 @@ test('cliNote names the npm package when the adapter is missing', () => {
   const note = cliNote('claude', agentAvailability(LOCAL(false), 'claude'), undefined)
   assert.match(note, /npm i -g @agentclientprotocol\/claude-agent-acp/)
   assert.match(cliNote('codex', agentAvailability(LOCAL(false), 'codex'), undefined), /codex-acp/)
+  assert.match(cliNote('kimi', agentAvailability(LOCAL(false), 'kimi'), undefined), /@moonshot-ai\/kimi-code/)
 })
 
 test('cliNote stays quiet while the reads are in flight', () => {
@@ -105,6 +106,6 @@ test('cliDefaultLabel names the CLI selection when the adapter reported one', ()
 })
 
 test('the type map matches the backend CLI-login types', () => {
-  assert.deepEqual(CLI_TYPE, { claude: 'claude_code', codex: 'codex' })
-  assert.deepEqual(Object.keys(ADAPTER_PKG), ['claude', 'codex'])
+  assert.deepEqual(CLI_TYPE, { claude: 'claude_code', codex: 'codex', kimi: 'kimi_code' })
+  assert.deepEqual(Object.keys(ADAPTER_PKG), ['claude', 'codex', 'kimi'])
 })

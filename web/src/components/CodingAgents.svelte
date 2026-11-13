@@ -1,6 +1,7 @@
 <script lang="ts">
-  // Read-only status of the host CLI coding agents (Claude Code / Codex / OpenCode)
-  // the assistant can drive over ACP. Self-contained like McpServers/SystemHealth:
+  // Read-only status of the host CLI coding agents (Claude Code / Codex / OpenCode /
+  // Kimi Code) the assistant can drive over ACP. Self-contained like
+  // McpServers/SystemHealth:
   // owns its own fetch. Editing (bridge address/token) is done via ENV/compose in
   // v1 — this card only reports what the running process sees.
   import { onMount } from 'svelte'
@@ -21,7 +22,7 @@
 
 <div class="setsec">
   Coding agents
-  <span class="setwide" title="CLI coding agents driven over ACP (Claude Code / Codex / OpenCode)">host CLIs</span>
+  <span class="setwide" title="CLI coding agents driven over ACP (Claude Code / Codex / OpenCode / Kimi Code)">host CLIs</span>
 </div>
 
 {#if err}

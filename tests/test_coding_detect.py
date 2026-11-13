@@ -17,7 +17,7 @@ def _bin(tmp_path: Path, *names: str) -> Path:
 
 def test_detect_returns_all_known_agents(tmp_path):
     agents = detect.detect_agents([_bin(tmp_path)])
-    assert {a.name for a in agents} == {"claude", "codex", "opencode"}
+    assert {a.name for a in agents} == {"claude", "codex", "opencode", "kimi"}
 
 
 def test_availability_reflects_what_is_really_on_the_search_path(tmp_path):

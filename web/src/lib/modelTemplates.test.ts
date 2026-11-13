@@ -33,9 +33,9 @@ test('no group in the order is empty', () => {
   }
 })
 
-// The grouping rule, stated as an assertion: the three that need no API key sit
-// under that heading, and the other six sit under their vendor's.
-const NO_KEY_CARDS = ['OpenAI · Sign in with ChatGPT', 'Claude Code · CLI login', 'Codex · CLI login']
+// The grouping rule, stated as an assertion: the four that need no API key sit
+// under that heading, and the others sit under their vendor's.
+const NO_KEY_CARDS = ['OpenAI · Sign in with ChatGPT', 'Claude Code · CLI login', 'Codex · CLI login', 'Kimi Code · CLI login']
 
 test('the templates needing no API key are exactly the subscription group', () => {
   const grouped = MODEL_TEMPLATES.filter((t) => TYPE_GROUP[t.type] === SUBSCRIPTION_GROUP)

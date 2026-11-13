@@ -293,7 +293,7 @@ def build_router(d: GatewayDeps, *, code_reader: Callable[[str], str]) -> APIRou
         missing adapter, bridge mode or a broken probe all read as an empty
         catalog, but ``reason`` says WHICH, so the form explains itself instead of
         silently degrading to a free-text field. ``?refresh=1`` skips the TTL cache."""
-        if agent not in ("claude", "codex"):
+        if agent not in ("claude", "codex", "kimi"):
             return JSONResponse({"ok": False, "error": f"unknown agent: {agent}"}, status_code=404)
         reason = d.catalog.unavailable_reason(agent)
         if reason:  # nothing to spawn — don't pay for a probe that can't work

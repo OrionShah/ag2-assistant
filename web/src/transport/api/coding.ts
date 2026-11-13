@@ -9,7 +9,7 @@ export const codingApi = {
   // an unreachable bridge reports connected:false rather than raising.
   codingAgents: () => get(G('/coding/agents'), CodingAgents),
 
-  // agent is 'claude' | 'codex'. An empty catalog carries a reason so the form
+  // agent is 'claude' | 'codex' | 'kimi'. An empty catalog carries a reason so the form
   // can say why it fell back to a free-text model field; refresh skips the TTL cache.
   codingModels: (agent: string, refresh = false) =>
     get(G(`/coding/${agent}/models${refresh ? '?refresh=1' : ''}`), CodingCatalog),

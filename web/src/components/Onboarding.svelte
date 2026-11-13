@@ -102,6 +102,7 @@
     // `cli` is the coding agent's name in coding/detect.py — what /api/coding/* keys on.
     { id: 'claude_code', label: 'Claude Code', cli: 'claude', hint: 'no API key · CLI login' },
     { id: 'codex', label: 'Codex', cli: 'codex', hint: 'no API key · CLI login' },
+    { id: 'kimi_code', label: 'Kimi Code', cli: 'kimi', hint: 'no API key · CLI login' },
   ]
 
   let step = $state(0)
@@ -152,7 +153,7 @@
   let agents = $state<AgentsRead | null>(null)
   let catalogs = $state<Record<string, CodingCatalog | 'loading' | undefined>>({})
   // Keyed by agent name, so the tab's own `cli` id can index it.
-  let cliModel: Record<string, string> = $state({ claude: '', codex: '' }) // '' = the CLI's own model
+  let cliModel: Record<string, string> = $state({ claude: '', codex: '', kimi: '' }) // '' = the CLI's own model
   const cliAvail = $derived(currentTab.cli ? agentAvailability(agents, currentTab.cli) : null)
   const cliCatalog = $derived(currentTab.cli ? catalogs[currentTab.cli] : undefined)
   const cliLoading = $derived(!!currentTab.cli && (!cliAvail?.loaded || cliCatalog === 'loading'))
@@ -588,13 +589,13 @@
                   {/if}
                 </div>
 
-                {#if cliReady && currentTab.cli === 'claude'}
+                {#if cliReady && (currentTab.cli === 'claude' || currentTab.cli === 'kimi')}
                   <div class="onb-field">
                     <div class="onb-flabel"><span>Assistant model</span></div>
                     <div class="onb-pills">
-                      <button class="onb-pill" class:on={!cliModel.claude} onclick={() => (cliModel.claude = '')}>{cliDefaultLabel(cliCatalog)}</button>
+                      <button class="onb-pill" class:on={!cliModel[cliName]} onclick={() => (cliModel[cliName] = '')}>{cliDefaultLabel(cliCatalog)}</button>
                       {#each cliModels as m}
-                        <button class="onb-pill" class:on={cliModel.claude === m.id} onclick={() => (cliModel.claude = m.id)}>{m.name || m.id}</button>
+                        <button class="onb-pill" class:on={cliModel[cliName] === m.id} onclick={() => (cliModel[cliName] = m.id)}>{m.name || m.id}</button>
                       {/each}
                     </div>
                   </div>

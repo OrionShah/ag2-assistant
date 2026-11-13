@@ -1,5 +1,5 @@
-// The CLI-login (ACP) options on the onboarding Connect step: Claude Code and
-// Codex run the assistant's main agent on the user's own coding CLI over ACP, so
+// The CLI-login (ACP) options on the onboarding Connect step: Claude Code, Codex and
+// Kimi Code run the assistant's main agent on the user's own coding CLI over ACP, so
 // there is no API key to paste. What has to be true instead is that the CLI's ACP
 // adapter is reachable — locally on PATH, or on the host through the ACP bridge in
 // Docker. These are the decisions the step makes about that, kept out of the
@@ -35,10 +35,11 @@ export type CatalogRead =
 export const ADAPTER_PKG: Record<string, string> = {
   claude: '@agentclientprotocol/claude-agent-acp',
   codex: '@agentclientprotocol/codex-acp',
+  kimi: '@moonshot-ai/kimi-code',
 }
 
 // agent name -> the llm-config type it is saved as (llm_configs.CLI_LOGIN_TYPES).
-export const CLI_TYPE: Record<string, string> = { claude: 'claude_code', codex: 'codex' }
+export const CLI_TYPE: Record<string, string> = { claude: 'claude_code', codex: 'codex', kimi: 'kimi_code' }
 
 /**
  * What the coding-agents read says about one agent.

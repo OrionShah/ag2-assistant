@@ -107,9 +107,11 @@
   function keyChip(c: LlmConfig) {
     if (c.key_source === 'subscription')
       return c.signed_in ? 'ChatGPT subscription · signed in' : 'ChatGPT subscription · not signed in'
-    if (c.key_source === 'cli_login') return c.type === 'codex' ? 'Codex CLI login' : 'Claude Code CLI login'
+    if (c.key_source === 'cli_login')
+      return c.type === 'codex' ? 'Codex CLI login' : c.type === 'kimi_code' ? 'Kimi Code CLI login' : 'Claude Code CLI login'
     if (c.type === 'claude_code') return 'Claude Code adapter not found — install claude-agent-acp'
     if (c.type === 'codex') return 'Codex adapter not found — install @agentclientprotocol/codex-acp'
+    if (c.type === 'kimi_code') return 'Kimi Code CLI not found — install @moonshot-ai/kimi-code'
     if (c.key_source === 'secret') return `${c.secret?.name || 'secret'} ${c.secret?.hint || ''}`.trim()
     if (c.key_source === 'shared') return `${c.shared_key?.env || 'provider key'} ${c.shared_key?.hint || ''}`.trim()
     if (c.key_source === 'not_needed') return 'no key needed'

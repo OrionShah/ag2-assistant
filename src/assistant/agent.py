@@ -90,7 +90,7 @@ _DEFAULT_AGGREGATE_MODEL = {
 # model config comes from acp_provider.BUILDERS and the per-call timeout does not
 # apply (see _build_middleware). Kept as a plain tuple so the branch below can be
 # taken without importing the coding package.
-ACP_PROVIDERS = ("claude_code", "codex")
+ACP_PROVIDERS = ("claude_code", "codex", "kimi_code")
 
 
 def model_config(config: Config, model: str | None = None):

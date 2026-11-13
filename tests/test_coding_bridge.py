@@ -128,7 +128,7 @@ async def test_list_returns_inventory(tmp_path):
     async with srv:
         agents = await BridgeClient(detect.BridgeEndpoint("127.0.0.1", port, "")).list_agents()
     by_name = {a.name: a.available for a in agents}
-    assert by_name == {"claude": True, "codex": False, "opencode": False}
+    assert by_name == {"claude": True, "codex": False, "opencode": False, "kimi": False}
 
 
 async def test_list_token_enforced(tmp_path):
